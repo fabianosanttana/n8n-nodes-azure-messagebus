@@ -91,7 +91,7 @@ export class AzureMessageBusNode implements INodeType {
 
 				//item = items[itemIndex];
 				console.log(itemIndex +":" + event + ":" + data);
-				let itemData = {"event":event, "data":data};
+				let itemData = { ...data };
 				let sendItem = [];
 				sendItem.push({body:itemData})
 

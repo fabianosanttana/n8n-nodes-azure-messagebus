@@ -1,10 +1,10 @@
 {
-  "name": "n8n-nodes-azure-messagebus",
+  "name": "n8n-node-azure-messagebus",
   "version": "0.0.1",
   "description": "Initial N8N node to send messages to AZURE message Bus",
   "keywords": [
     "n8n-community-node-package",
-    "n8n-nodes-azure-messagebus"
+    "n8n-node-azure-messagebus"
   ],
   "license": "MIT",
   "homepage": "",
