@@ -7,14 +7,9 @@ import {
 	NodeOperationError,
 } from 'n8n-workflow';
 
-
-
-import {
-	sendMessage,
-} from './GenericFunctions';
+import { sendMessage } from './GenericFunctions';
 import { AzMBModels } from './models';
 import { ServiceBusClient } from '@azure/service-bus';
-
 
 export class AzureMessageBusNode implements INodeType {
 	description: INodeTypeDescription = {
@@ -36,19 +31,8 @@ export class AzureMessageBusNode implements INodeType {
 			},
 		],
 		properties: [
-			// Node properties which the user gets displayed and
-			// can change on the node.
-
 			{
-				displayName: 'Event Name',
-				name: 'event',
-				type: 'string',
-				default: '',
-				placeholder: 'event-name',
-				description: 'Event defined on the event bus',
-			},
-			{
-				displayName: 'Data',
+				displayName: 'Payload',
 				name: 'data',
 				type: 'string',
 				default: '',
@@ -67,16 +51,16 @@ export class AzureMessageBusNode implements INodeType {
 
 		//let item: INodeExecutionData;
 
+		const credentials = (await this.getCredentials(
+			'azureMessageBusNodeApi',
+		)) as AzMBModels.Credentials;
+		let connectionString = credentials.connectionString;
 
-		const credentials = await this.getCredentials('azureMessageBusNodeApi') as AzMBModels.Credentials;
-		let connectionString  =  credentials.connectionString;
+		const endpointUri: string = connectionString + 'EntityPath=' + credentials.qName;
 
+		const serviceBusClient = new ServiceBusClient(endpointUri);
 
-	const endpointUri: string = connectionString + 'EntityPath=' + credentials.qName;
-
-	const serviceBusClient = new ServiceBusClient(endpointUri);
-
-	const sender = serviceBusClient.createSender ( credentials.qName);
+		const sender = serviceBusClient.createSender(credentials.qName);
 
 		const returnData: IDataObject[] = [];
 		let responseData;
@@ -85,21 +69,19 @@ export class AzureMessageBusNode implements INodeType {
 		// (This could be a different value for each item in case it contains an expression)
 		for (let itemIndex = 0; itemIndex < items.length; itemIndex++) {
 			try {
-
 				let event = this.getNodeParameter('event', itemIndex, '') as string;
 				let data = this.getNodeParameter('data', itemIndex, '') as string;
 
 				//item = items[itemIndex];
-				console.log(itemIndex +":" + event + ":" + data);
-				let itemData = { ...data };
+				console.log(itemIndex + ':' + event + ':' + data);
+				let itemData = data;
 				let sendItem = [];
-				sendItem.push({body:itemData})
+				sendItem.push({ body: itemData });
 
-				responseData = await sendMessage.call( this,  sender, sendItem);
-				console.log("AFTER" + itemIndex);
+				responseData = await sendMessage.call(this, sender, sendItem);
+				console.log('AFTER' + itemIndex);
 
 				returnData.push(responseData as IDataObject);
-
 			} catch (error) {
 				// This node should never fail but we want to showcase how
 				// to handle errors.

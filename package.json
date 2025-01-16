@@ -1,20 +1,20 @@
 {
-  "name": "n8n-node-azure-messagebus",
-  "version": "0.0.1",
-  "description": "Initial N8N node to send messages to AZURE message Bus",
+  "name": "n8n-nodes-azure-service-message-bus",
+  "version": "0.0.2",
+  "description": "Initial N8N node to send messages to AZURE message Bus, forked from @tinusrautenbach",
   "keywords": [
     "n8n-community-node-package",
-    "n8n-node-azure-messagebus"
+    "n8n-nodes-azure-service-message-bus"
   ],
   "license": "MIT",
   "homepage": "",
   "author": {
-    "name": "tinusrautenbach",
-    "email": "tr@ls.co.za"
+    "name": "Fabiano Santana",
+    "email": "fabianosanttana@hotmail.com"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/tinusrautenbach/n8n-nodes-azure-messagebus.git"
+    "url": "https://github.com/fabianosanttana/n8n-nodes-azure-messagebus.git"
   },
   "main": "index.js",
   "scripts": {
@@ -29,7 +29,7 @@
     "dist"
   ],
   "n8n": {
-    "n8nNodesApiVersion": 1,
+    "n8nNodesApiVersion": 2,
     "credentials": [
       "dist/credentials/AzureMessageBusNodeApi.credentials.js"
     ],
